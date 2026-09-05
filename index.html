@@ -443,6 +443,30 @@
     100%{opacity:0; transform:translateY(-260px) scale(0.3);}
   }
 
+  .cake-emoji{
+    position:fixed;
+    pointer-events:none;
+    z-index:60;
+    transform:translate(-50%,-50%);
+    animation:cake-burst ease-out forwards;
+    will-change:transform, opacity;
+  }
+
+  @keyframes cake-burst{
+    0%{
+      opacity:0;
+      transform:translate(-50%,-50%) translate(0,0) rotate(0deg) scale(0.6);
+    }
+    12%{
+      opacity:1;
+      transform:translate(-50%,-50%) translate(calc(var(--dx) * 0.2), calc(var(--dy) * 0.25)) rotate(calc(var(--rot) * 0.3)) scale(1);
+    }
+    100%{
+      opacity:0;
+      transform:translate(-50%,-50%) translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(1);
+    }
+  }
+
   /* ---------- FOOTER ---------- */
   footer{
     background:var(--ink);
@@ -639,6 +663,10 @@
       glow.style.top = rect.top + 'px';
       document.body.appendChild(glow);
       setTimeout(()=>glow.remove(), 2700);
+      // burst of cake emoji for a few moments
+      spawnCakeBurst();
+      // this is the guaranteed moment the song starts
+      startSongOnBlow();
     } else {
       flame.classList.remove('out');
       hint.textContent = '';
@@ -646,21 +674,51 @@
     }
   });
 
-  // ---------- background song: loops automatically, no button needed ----------
-  const bgMusic = document.getElementById('bg-music');
-  bgMusic.volume = 0.55;
-
-  function attemptAutoplay(){
-    if(bgMusic.paused){
-      bgMusic.play().catch(()=>{ /* browser blocked it — will start on first tap */ });
+  function spawnCakeBurst(){
+    const count = 22;
+    const originX = window.innerWidth / 2;
+    const originY = candle.getBoundingClientRect().top;
+    for(let i=0; i<count; i++){
+      const cake = document.createElement('span');
+      cake.textContent = '🎂';
+      cake.className = 'cake-emoji';
+      const spread = (Math.random()-0.5) * window.innerWidth * 0.8;
+      const rise = 160 + Math.random()*220;
+      const rotate = (Math.random()-0.5) * 120;
+      const size = 1.3 + Math.random()*1.4;
+      const delay = Math.random()*0.4;
+      const duration = 1.8 + Math.random()*1.4;
+      cake.style.left = originX + 'px';
+      cake.style.top = originY + 'px';
+      cake.style.fontSize = size + 'rem';
+      cake.style.setProperty('--dx', spread + 'px');
+      cake.style.setProperty('--dy', (-rise) + 'px');
+      cake.style.setProperty('--rot', rotate + 'deg');
+      cake.style.animationDelay = delay + 's';
+      cake.style.animationDuration = duration + 's';
+      document.body.appendChild(cake);
+      setTimeout(()=>cake.remove(), (duration+delay)*1000 + 200);
     }
   }
 
-  window.addEventListener('load', attemptAutoplay);
-  // most mobile browsers require a tap before audio can start — this catches the very first one
-  ['click','touchstart','keydown'].forEach(evt =>
-    document.addEventListener(evt, attemptAutoplay, { once:true })
-  );
+  // ---------- background song: starts the moment the candle is blown out ----------
+  const bgMusic = document.getElementById('bg-music');
+  bgMusic.volume = 0;
+  let songStarted = false;
+
+  function startSongOnBlow(){
+    if(songStarted) return;
+    songStarted = true;
+    bgMusic.play().then(() => {
+      // gentle fade-in instead of jumping straight to full volume
+      let vol = 0;
+      const fade = setInterval(() => {
+        vol += 0.05;
+        bgMusic.volume = Math.min(vol, 0.55);
+        if(vol >= 0.55) clearInterval(fade);
+      }, 120);
+    }).catch(()=>{ songStarted = false; /* will retry on next tap of the candle */ });
+  }
 </script>
 
 </body>
