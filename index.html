@@ -262,19 +262,10 @@
     width:100%;
     aspect-ratio:1/1;
     border-radius:1px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:rgba(18,19,42,0.35);
-    font-size:1.9rem;
+    display:block;
+    object-fit:cover;
+    object-position:center 25%;
   }
-
-  /* five distinct warm gradient placeholders — swap these divs for <img> tags */
-  .p1{background:linear-gradient(140deg,#e8c17d,#e3a9a4);}
-  .p2{background:linear-gradient(140deg,#93a281,#cfd9b8);}
-  .p3{background:linear-gradient(140deg,#e3a9a4,#7c6fae);}
-  .p4{background:linear-gradient(140deg,#7c6fae,#3a3170);color:rgba(247,240,230,0.55);}
-  .p5{background:linear-gradient(140deg,#cfd9b8,#e8c17d);}
 
   .polaroid figcaption{
     display:block;
@@ -533,23 +524,23 @@
 <section id="memories">
   <div class="kicker">a few frames</div>
   <h2 class="serif">From your last birthday</h2>
-  <p class="memories-sub">The only four I've got — from the last time.</p>
+  <p class="memories-sub">The only four I've got — from the last time we celebrated you together. Send the rest whenever you find them, and they'll find a frame here.</p>
 
   <div class="gallery">
     <figure class="polaroid">
-      <img src="IMG_20260905_231928.jpg" class="photo-slot" style="object-fit:cover;"> 
+      <img class="photo-slot" src="photo1.jpg" alt="Amisha with her birthday cake">
       <figcaption>turning 22, one year ago</figcaption>
     </figure>
     <figure class="polaroid">
-      <img src="IMG-20260905-WA0011.jpg" class="photo-slot" style="object-fit:cover;"> 
+      <img class="photo-slot" src="photo2.jpg" alt="Amisha holding her birthday cake">
       <figcaption>cake, candles, chaos</figcaption>
     </figure>
     <figure class="polaroid">
-      <img src="IMG_20260905_231949.jpg" class="photo-slot" style="object-fit:cover;"> 
+      <img class="photo-slot" src="photo3.jpg" alt="Amisha on the phone with cake in hand">
       <figcaption>the loudest we laughed</figcaption>
     </figure>
     <figure class="polaroid">
-      <img src="IMG_20260905_232004.jpg" class="photo-slot" style="object-fit:cover;"> 
+      <img class="photo-slot" src="photo4.jpg" alt="Amisha making a funny face with her cake">
       <figcaption>a year ago, buddy</figcaption>
     </figure>
   </div>
@@ -596,14 +587,7 @@
   <br><br>— Snehasish, your buddy
 </footer>
 
-<!--
-  🎵 ADD YOUR SONG HERE
-  1. Use an MP3 file (best browser support). Rename it "song.mp3", or keep its name and update the src below.
-  2. Put the audio file in the SAME FOLDER as this HTML file.
-  3. That's it — it plays automatically on loop, no button needed. If the browser
-     blocks autoplay with sound, it will start the moment Amisha taps/scrolls the page.
--->
-<audio id="bg-music" src="ReelAudio-87714.mp3" loop preload="auto"></audio>
+<audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
 
 <script>
   // ---------- stars ----------
